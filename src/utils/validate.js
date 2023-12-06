@@ -1,3 +1,5 @@
+import { getAuth } from "firebase/auth";
+
 export const checkValidData = (email, password, name) => {
     const isEmailValid = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(
       email
@@ -13,3 +15,5 @@ export const checkValidData = (email, password, name) => {
   
     return null;
   };
+
+  export const auth = getAuth();
