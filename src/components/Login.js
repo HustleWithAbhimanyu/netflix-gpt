@@ -1,35 +1,93 @@
+
 import { useState ,useRef} from "react";
-import React from "react";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    updateProfile,
+  } from "firebase/auth";
+  import { auth } from "../utils/firebase";
 import Header from "./Header";
 import { checkValidData } from "../utils/validate";
+
+  import { useNavigate } from "react-router-dom";
 
 const Login =() => {
     
     
     const [isSignInForm, setIsSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
-    const toggleSignInForm = () => {
-        setIsSignInForm(!isSignInForm);
-    };
+    const navigate = useNavigate();
+
+   
     const email = useRef(null);
     const password = useRef(null);
-    const name = useRef(null);
-       
+    const name = useRef(null);   
 
         const handleButtonClick=() =>{
             // validate thr form data 
             const message = isSignInForm
-        ? checkValidData(email.current.value, password.current.value)
-        : checkValidData(
+            ? checkValidData(email.current.value, password.current.value)
+            : checkValidData(
             email.current.value,
             password.current.value,
             name.current.value
             );
-    setErrorMessage(message);
-    if (message) return;
 
+        setErrorMessage(message);
+        if (message) return;
 
-    }
+        if (!isSignInForm) {
+            // Sign Up Logic
+            createUserWithEmailAndPassword(
+              auth,
+              email.current.value,
+              password.current.value
+            )
+              .then((userCredential) => {
+                const user = userCredential.user;
+                updateProfile(user, {
+                  displayName: name.current.value,
+                  photoURL: "https://avatars.githubusercontent.com/u/12824231?v=4",
+                })
+                  .then(() => {
+                    navigate("/browse");
+                  })
+                  .catch((error) => {
+                    setErrorMessage(error.message);
+                  });
+              })
+              .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                setErrorMessage(errorCode + "-" + errorMessage);
+              });
+          } else {
+            // Sign In Logic
+            signInWithEmailAndPassword(
+              auth,
+              email.current.value,
+              password.current.value
+            )
+              .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                console.log(user);
+                navigate("/browse");
+              })
+              .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                setErrorMessage(errorCode + "-" + errorMessage);
+              });
+          }
+        
+            
+        };
+
+        const toggleSignInForm = () => {
+            setIsSignInForm(!isSignInForm);
+        };
+    
 
     return (
         <div>
