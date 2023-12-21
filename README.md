@@ -19,6 +19,12 @@
 -created Custom HOOK for NowPlayingMovies
 -Upadted Store with Movies, Trailer Data
 -Embeded YouTube Video and make it Autoplay and mute 
+- Build Secondary Component
+- Build Movie List
+- build Movie Card
+- TMDB Image CDN URL
+- Made the Browsre page amazing with Tailwind CSS
+- usePopularMovies Custom hook
 
 
 
