@@ -8,7 +8,7 @@ import {
   import { auth } from "../utils/firebase";
 import Header from "./Header";
 import { checkValidData } from "../utils/validate";
-import { LOGO } from "../utils/constants";
+import { BG_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { USER_AVATAR } from "../utils/constants";
@@ -108,7 +108,7 @@ const Login =() => {
           <Header/>
             <div className="absolute">
                 <img 
-                src={LOGO}
+                src={BG_URL}
                 alt="Logo"
                 />
             </div>
